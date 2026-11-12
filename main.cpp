@@ -178,6 +178,69 @@ public:
 
         cout << endl;
     }
+
+    // Find the Minimum Spanning Tree using Prim's algorithm
+    void minimumSpanningTree() {
+        vector<int> parent(SIZE, -1);
+        vector<int> key(SIZE, 999999);
+        vector<bool> visited(SIZE, false);
+
+        // Start building the tree from intersection 0
+        key[0] = 0;
+
+        // Find the minimum spanning tree
+        for (int i = 0; i < SIZE; i++) {
+            int current = -1;
+            int smallestWeight = 999999;
+
+            // Find the unvisited intersection with the smallest weight
+            for (int j = 0; j < SIZE; j++) {
+                if (!visited[j] && key[j] < smallestWeight) {
+                    smallestWeight = key[j];
+                    current = j;
+                }
+            }
+
+            if (current == -1) {
+                break;
+            }
+
+            visited[current] = true;
+
+            // Check the roads connected to the current intersection
+            for (auto &neighbor : adjList[current]) {
+                int next = neighbor.first;
+                int weight = neighbor.second;
+
+                // Update if a cheaper road is found
+                if (!visited[next] && weight < key[next]) {
+                    key[next] = weight;
+                    parent[next] = current;
+                }
+            }
+        }
+
+        // Display the minimum spanning tree
+        cout << "Minimum Spanning Tree - City Road Network:" << endl;
+        cout << "================================" << endl;
+
+        int totalDistance = 0;
+
+        for (int i = 0; i < SIZE; i++) {
+            if (parent[i] != -1) {
+                cout << "Road from " << locationNames[parent[i]]
+                     << " to " << locationNames[i]
+                     << " with distance: " << key[i] << " km"
+                     << endl;
+
+                totalDistance += key[i];
+            }
+        }
+
+        cout << "Total road distance: " << totalDistance << " km"
+             << endl << endl;
+    }
+
 };
 
 int main() {
@@ -221,6 +284,7 @@ int main() {
     cityNetwork.DFS(0);
     cityNetwork.BFS(0);
     cityNetwork.shortestPaths(0);
+    cityNetwork.minimumSpanningTree();
 
     return 0;
 }
