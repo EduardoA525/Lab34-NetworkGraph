@@ -123,6 +123,61 @@ public:
 
         cout << endl;
     }
+
+    // Find the shortest road distances using Dijkstra's algorithm
+    void shortestPaths(int start) {
+        vector<int> distance(SIZE, 999999);
+        vector<bool> visited(SIZE, false);
+
+        // Distance from the starting intersection to itself is 0
+        distance[start] = 0;
+
+        // Visit every intersection
+        for (int i = 0; i < SIZE; i++) {
+            int current = -1;
+            int smallestDistance = 999999;
+
+            // Find the unvisited intersection with the smallest distance
+            for (int j = 0; j < SIZE; j++) {
+                if (!visited[j] && distance[j] < smallestDistance) {
+                    smallestDistance = distance[j];
+                    current = j;
+                }
+            }
+
+            // Stop if no reachable intersection remains
+            if (current == -1) {
+                break;
+            }
+
+            visited[current] = true;
+
+            // Check all roads connected to the current intersection
+            for (auto &neighbor : adjList[current]) {
+                int next = neighbor.first;
+                int weight = neighbor.second;
+
+                int newDistance = distance[current] + weight;
+
+                // Update the distance if a shorter route is found
+                if (!visited[next] && newDistance < distance[next]) {
+                    distance[next] = newDistance;
+                }
+            }
+        }
+
+        // Display the shortest distances
+        cout << "Shortest road distances from Intersection "
+             << start << " (" << locationNames[start] << "):" << endl;
+
+        for (int i = 0; i < SIZE; i++) {
+            cout << start << " -> " << i << " : "
+                 << distance[i] << " km ("
+                 << locationNames[i] << ")" << endl;
+        }
+
+        cout << endl;
+    }
 };
 
 int main() {
@@ -165,6 +220,7 @@ int main() {
     // Perform road inspections starting from City Hall
     cityNetwork.DFS(0);
     cityNetwork.BFS(0);
+    cityNetwork.shortestPaths(0);
 
     return 0;
 }
