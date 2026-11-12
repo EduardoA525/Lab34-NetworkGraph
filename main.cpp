@@ -240,7 +240,6 @@ public:
         cout << "Total road distance: " << totalDistance << " km"
              << endl << endl;
     }
-
 };
 
 int main() {
@@ -277,14 +276,52 @@ int main() {
     // Create the city road network
     Graph cityNetwork(edges, locationNames);
 
-    // Display the network
-    cityNetwork.printGraph();
+    int choice;
 
-    // Perform road inspections starting from City Hall
-    cityNetwork.DFS(0);
-    cityNetwork.BFS(0);
-    cityNetwork.shortestPaths(0);
-    cityNetwork.minimumSpanningTree();
+    do {
+        cout << "\nCity Road Network Manager" << endl;
+        cout << "================================" << endl;
+        cout << "[1] Display city road network" << endl;
+        cout << "[2] Check nearby intersections (BFS)" << endl;
+        cout << "[3] Plan road inspection route (DFS)" << endl;
+        cout << "[4] Calculate shortest paths" << endl;
+        cout << "[5] Find Minimum Spanning Tree" << endl;
+        cout << "[0] Exit" << endl;
+        cout << "Enter your choice: ";
+
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cityNetwork.printGraph();
+                break;
+
+            case 2:
+                cityNetwork.BFS(0);
+                break;
+
+            case 3:
+                cityNetwork.DFS(0);
+                break;
+
+            case 4:
+                cityNetwork.shortestPaths(0);
+                break;
+
+            case 5:
+                cityNetwork.minimumSpanningTree();
+                break;
+
+            case 0:
+                cout << "Exiting City Road Network Manager. Goodbye!"
+                     << endl;
+                break;
+
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+
+    } while (choice != 0);
 
     return 0;
 }
